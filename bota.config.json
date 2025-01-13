@@ -1,0 +1,21 @@
+{
+    "HF_API_KEY": "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",
+    "HF_MODELS": {
+        "qwen_32B_instruct": "Qwen/Qwen2.5-Coder-32B-Instruct",
+        "qwen_72B_instruct": "Qwen/Qwen2.5-72B-Instruct",
+        "qwen_32B_preview": "Qwen/QwQ-32B-Preview",
+        "meta_llama_70B_instruct": "meta-llama/Llama-3.3-70B-Instruct"
+    },
+    "DEFAULT_MODEL": "meta_llama_70B_instruct",
+    "API_URL_TEMPLATE": "https://api-inference.huggingface.co/models/{HF_MODELS}/v1/chat/completions",
+    "INSTANCES": [
+        {
+            "name": "dev_instance_1",
+            "model": "meta_llama_70B_instruct",
+            "temperature": 0.7,
+            "max_tokens": 4096,
+            "top_p": 0.7,
+            "stream": true
+        }
+    ]
+}
