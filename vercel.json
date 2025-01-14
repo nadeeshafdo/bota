@@ -3,12 +3,7 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxMemory": 128,
-        "timeout": 30
-      },
-      "handler": "app.app"
+      "use": "@vercel/python"
     }
   ],
   "routes": [
