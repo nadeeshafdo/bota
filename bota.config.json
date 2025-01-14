@@ -1,4 +1,5 @@
 {
+    "version": "0.1.0-alpha.1",
     "HF_API_KEY": "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",
     "HF_MODELS": {
         "qwen_32B_instruct": "Qwen/Qwen2.5-Coder-32B-Instruct",
