@@ -2,7 +2,7 @@
 
 ## About
 
-BOTA AI Assistant is a web application built using Flask that allows users to interact with a specified AI model to perform actions on their local machine. The application supports executing Python code snippets directly from the chat interface, with the code being executed on the server and capable of interacting with the client's machine.
+BOTA AI Assistant is a web application built using Flask that allows users to interact with a specified AI model to perform actions on their local machine. The application supports executing Python code snippets directly from the chat interface.
 
 ## Quick Start
 
@@ -31,21 +31,15 @@ BOTA AI Assistant is a web application built using Flask that allows users to in
    - Copy the `bota.config.json` file and rename it to `bota.config.local.json` if you want to modify the configuration without affecting the original file.
    - Update the `bota.config.local.json` file with your API keys and model details.
 
-4. **Set Environment Variable (Optional)**
-
-   If you are using a custom configuration file, set the `BOTA_CONFIG` environment variable to point to your configuration file:
-
-   ```sh
-   export BOTA_CONFIG=bota.config.local.json
-   ```
-
-5. **Run the Application**
+4. **Run the Application**
 
    ```sh
    python app.py
+   or
+   flask run
    ```
 
-6. **Access the Application**
+5. **Access the Application**
 
    Open your web browser and go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/) to interact with BOTA AI Assistant.
 
