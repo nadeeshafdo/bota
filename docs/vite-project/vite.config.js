@@ -5,16 +5,52 @@ import path from 'path';
 
 function deleteFolderContents(folderPath, exclude = []) {
   if (!fs.existsSync(folderPath)) return;
-  fs.readdirSync(folderPath).forEach((file) => {
-    const fullPath = path.join(folderPath, file);
-    if (!exclude.includes(file)) {
-      if (fs.lstatSync(fullPath).isDirectory()) {
-        fs.rmSync(fullPath, { recursive: true, force: true });
+  
+  const items = fs.readdirSync(folderPath);
+  for (const item of items) {
+    if (exclude.includes(item)) continue;
+    
+    const fullPath = path.join(folderPath, item);
+    if (fs.lstatSync(fullPath).isDirectory()) {
+      fs.rmSync(fullPath, { recursive: true, force: true });
+    } else {
+      fs.unlinkSync(fullPath);
+    }
+  }
+}
+
+function moveDirectory(source, destination) {
+  if (!fs.existsSync(source)) return;
+
+  const items = fs.readdirSync(source);
+  for (const item of items) {
+    const sourcePath = path.join(source, item);
+    const destPath = path.join(destination, item);
+
+    try {
+      // Handle existing files/directories at destination
+      if (fs.existsSync(destPath)) {
+        if (fs.lstatSync(destPath).isDirectory()) {
+          fs.rmSync(destPath, { recursive: true, force: true });
+        } else {
+          fs.unlinkSync(destPath);
+        }
+      }
+      
+      // Move the file/directory
+      fs.renameSync(sourcePath, destPath);
+    } catch (error) {
+      console.error(`Error moving ${item}: ${error.message}`);
+      // If rename fails (e.g., across devices), fallback to copy
+      if (fs.lstatSync(sourcePath).isDirectory()) {
+        fs.cpSync(sourcePath, destPath, { recursive: true });
+        fs.rmSync(sourcePath, { recursive: true, force: true });
       } else {
-        fs.unlinkSync(fullPath);
+        fs.copyFileSync(sourcePath, destPath);
+        fs.unlinkSync(sourcePath);
       }
     }
-  });
+  }
 }
 
 export default defineConfig({
@@ -23,29 +59,32 @@ export default defineConfig({
     {
       name: 'post-build-move',
       closeBundle() {
-        const docsPath = path.resolve(__dirname, '../docs');
-        const distPath = path.resolve(__dirname, './dist');
-        
-        // Ensure the docs directory exists
-        if (!fs.existsSync(docsPath)) {
-          fs.mkdirSync(docsPath, { recursive: true });
+        try {
+          // Fix: Go up two levels to reach the root docs directory
+          const docsPath = path.resolve(__dirname, '..', '..', 'docs');
+          const distPath = path.resolve(__dirname, 'dist');
+
+          console.log('Docs path:', docsPath); // Debug log
+          console.log('Dist path:', distPath); // Debug log
+
+          // Clean docs directory except vite-project
+          deleteFolderContents(docsPath, ['vite-project']);
+
+          // Move dist contents to docs
+          moveDirectory(distPath, docsPath);
+
+          // Clean up dist directory
+          if (fs.existsSync(distPath)) {
+            fs.rmSync(distPath, { recursive: true, force: true });
+          }
+
+          console.log('✨ Build output successfully moved to ./docs!');
+        } catch (error) {
+          console.error('Error in post-build process:', error);
+          throw error;
         }
-
-        // Clean the docs folder except vite-project
-        deleteFolderContents(docsPath, ['vite-project']);
-
-        // Move dist contents to docs
-        if (fs.existsSync(distPath)) {
-          fs.readdirSync(distPath).forEach((file) => {
-            const sourcePath = path.join(distPath, file);
-            const destPath = path.join(docsPath, file);
-            fs.renameSync(sourcePath, destPath);
-          });
-        }
-
-        console.log('Build output moved to ./docs successfully!');
-      },
-    },
+      }
+    }
   ],
-  base: '/',
+  base: '/bota/',
 });
