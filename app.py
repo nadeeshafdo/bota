@@ -107,7 +107,7 @@ def chat():
     Handles chat requests, selecting the appropriate model instance dynamically.
     """
     data = request.get_json()
-    instance_name = data.get('instance', 'dev_instance_1')
+    instance_name = data.get('instance', 'main_instance')
     messages = data.get('messages', [])
 
     instance = model_instances.get(instance_name)

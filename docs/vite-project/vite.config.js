@@ -86,5 +86,5 @@ export default defineConfig({
       }
     }
   ],
-  base: '/bota/',
+  base: '/bota/'
 });

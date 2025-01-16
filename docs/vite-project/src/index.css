@@ -70,3 +70,35 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.prose {
+  @apply text-gray-300;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  @apply text-white font-bold;
+}
+
+.prose h1 {
+  @apply text-3xl mb-6;
+}
+
+.prose h2 {
+  @apply text-2xl mt-8 mb-4;
+}
+
+.prose h3 {
+  @apply text-xl mt-6 mb-3;
+}
+
+.prose p {
+  @apply mb-4;
+}
+
+.prose ul {
+  @apply list-disc list-inside mb-4;
+}
+
+.prose a {
+  @apply text-blue-400 hover:text-blue-300;
+}

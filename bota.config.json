@@ -11,7 +11,7 @@
     "API_URL_TEMPLATE": "https://api-inference.huggingface.co/models/{HF_MODELS}/v1/chat/completions",
     "INSTANCES": [
         {
-            "name": "dev_instance_1",
+            "name": "main_instance",
             "model": "qwen_32B_instruct",
             "temperature": 0.7,
             "max_tokens": 4096,

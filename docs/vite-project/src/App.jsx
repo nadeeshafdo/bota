@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import * as LucideIcons from 'lucide-react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Updates from './pages/updates';
 
 const MainLayout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,10 +9,10 @@ const MainLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white relative">
       {/* Noise overlay */}
-      <div className="fixed inset-0 opacity-[0.03] pointer-events-none">
+      <div className="fixed inset-0 opacity-[0.05] pointer-events-none">
         <svg className="w-full h-full">
           <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" />
           </filter>
           <rect width="100%" height="100%" filter="url(#noise)" />
         </svg>
@@ -23,19 +25,15 @@ const MainLayout = ({ children }) => {
               <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
                 {isOpen ? <LucideIcons.X /> : <LucideIcons.Menu />}
               </button>
-              <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent ml-3">
-                BOTA AI Assistant
-              </span>
+              <a href="/" className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent ml-3">BOTA AI Assistant</a>
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <a href="#features" className="hover:text-blue-400 transition-colors">Features</a>
               <a href="#installation" className="hover:text-blue-400 transition-colors">Installation</a>
               <a href="#usage" className="hover:text-blue-400 transition-colors">Usage</a>
-              <a href="https://github.com/nadeeshafdo/bota" 
-                 className="hover:text-blue-400 transition-colors flex items-center">
-                <LucideIcons.Github className="w-5 h-5 mr-1" />
-                GitHub
-              </a>
+              <a href="/updates" className="hover:text-blue-400 transition-colors">Updates</a>
+              <a href="https://github.com/nadeeshafdo/bota" className="hover:text-blue-400 transition-colors flex items-center">
+              <LucideIcons.Github className="w-5 h-5 mr-1" />GitHub</a>
             </div>
           </div>
         </div>
@@ -47,12 +45,13 @@ const MainLayout = ({ children }) => {
           <a href="#features" className="block hover:text-blue-400 transition-colors">Features</a>
           <a href="#installation" className="block hover:text-blue-400 transition-colors">Installation</a>
           <a href="#usage" className="block hover:text-blue-400 transition-colors">Usage</a>
+          <Link to="/updates" className="block hover:text-blue-400 transition-colors">Updates</Link>
           <a href="https://github.com/nadeeshafdo/bota" className="block hover:text-blue-400 transition-colors">GitHub</a>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="pt-16">
+      <div className="pt-40">
         {children}
       </div>
     </div>
@@ -75,9 +74,9 @@ const CodeBlock = ({ code, language = "bash" }) => (
   </div>
 );
 
-const App = () => {
+const HomePage = () => {
   return (
-    <MainLayout>
+    <>
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
@@ -186,7 +185,18 @@ const App = () => {
           <p>© {new Date().getFullYear()} BOTA AI Assistant. Licensed under MIT.</p>
         </div>
       </footer>
-    </MainLayout>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+        <Route path="/updates" element={<MainLayout><Updates /></MainLayout>} />
+      </Routes>
+    </Router>
   );
 };
 
